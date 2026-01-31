@@ -6,10 +6,40 @@
 <link rel="canonical" href="{{ .Permalink }}">
 
 <!-- Open Graph / Facebook -->
-{{ template "_internal/opengraph.html" . }}
+<meta property="og:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}" />
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary }}{{ else }}{{ with .Site.Params.Description }}{{ . }}{{ end }}{{ end }}{{ end }}" />
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:site_name" content="{{ .Site.Title }}" />
 
 <!-- Twitter -->
-{{ template "_internal/twitter_cards.html" . }}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}" />
+<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary }}{{ else }}{{ with .Site.Params.Description }}{{ . }}{{ end }}{{ end }}{{ end }}" />
+
+{{- $ogImage := "" -}}
+{{- if .Params.images -}}
+  {{- $ogImage = index .Params.images 0 -}}
+{{- else -}}
+  {{- $images := .Resources.ByType "image" -}}
+  {{- $featured := $images.GetMatch "*feature*" -}}
+  {{- if not $featured }}{{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}{{ end -}}
+  
+  {{- if $featured -}}
+    {{- $ogImage = $featured.Permalink -}}
+  {{- else -}}
+    {{- /* Extract first image from content */ -}}
+    {{- $img_match := findRE "<img.+?src=[\"'](.+?)[\"']" .Content 1 -}}
+    {{- range $img_match -}}
+      {{- $ogImage = replaceRE "<img.+?src=[\"'](.+?)[\"']" "$1" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $ogImage -}}
+<meta property="og:image" content="{{ $ogImage | absURL }}" />
+<meta property="twitter:image" content="{{ $ogImage | absURL }}" />
+{{- end -}}
 
 <!-- Microdata -->
 {{ template "_internal/schema.html" . }}
