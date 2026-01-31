@@ -4,6 +4,7 @@
         --width-max: 720px;
         --font-primary: Verdana, sans-serif;
         --font-secondary: monospace;
+        --font-title: 'Bebas Neue', Impact, sans-serif;
         --font-size-primary: 1em;
         --font-size-secondary: 0.8em;
         --bg-color-primary: #fdfdfd;
@@ -15,9 +16,13 @@
         --link-visited-color: #551a8b;
         --border-color: #d0d7de;
         --upvoted-color: #fa8072;
+        --color-bebop-red: #c41e3a;
+        --color-bebop-orange: #ff6f3c;
     }
 
+
     @media (prefers-color-scheme: dark) {
+
         /* dark theme */
         :root {
             --bg-color-primary: #121212;
@@ -51,20 +56,16 @@
     h3,
     h4,
     h5,
-    h6,
+    h6 {
+        color: var(--text-color-primary);
+        margin: 16px 0;
+    }
+
     strong,
     b {
         color: var(--text-color-primary);
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        margin: 16px 0;
-    }
 
     a {
         color: var(--link-color);
@@ -81,13 +82,28 @@
         border: 0;
     }
 
+    .title h1 {
+        font-family: var(--font-title);
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-weight: 400;
+        font-size: 2.2em;
+        transition: all 0.3s ease;
+    }
+
     .title:hover {
         text-decoration: none;
+    }
+
+    .title:hover h1 {
+        color: var(--color-bebop-red);
+        text-shadow: 2px 2px 0 var(--color-bebop-orange);
     }
 
     .title span {
         font-weight: 400;
     }
+
 
     nav a {
         margin-right: 8px;
@@ -234,89 +250,77 @@
 
     /* TOC 样式 */
     div.toc {
-        position: fixed; /* 固定定位 */
-        top: 50%; /* 垂直居中 */
-        left: calc(
-            (100vw + var(--width-max)) / 2
-        ); /* 水平定位，根据视口宽度和最大内容宽度计算 */
-        transform: translateY(-50%); /* 垂直居中调整 */
-        width: calc((90vw - var(--width-max)) / 2); /* 宽度计算 */
-        max-height: 80vh; /* 最大高度为视口高度的80% */
-        overflow-y: auto; /* 垂直方向内容溢出时显示滚动条 */
-        border: none; /* 无边框 */
-        padding: 0; /* 无内边距 */
-        margin: 0; /* 无外边距 */
-        z-index: 99; /* 设置堆叠顺序，确保在其他元素之上 */
-
-        /* 隐藏滚动条 */
-        -ms-overflow-style: none; /* IE 和 Edge 隐藏滚动条 */
-        scrollbar-width: none; /* Firefox 隐藏滚动条 */
+        position: fixed;
+        top: 50%;
+        left: calc((100vw + var(--width-max)) / 2);
+        transform: translateY(-50%);
+        width: calc((90vw - var(--width-max)) / 2);
+        max-height: 80vh;
+        overflow-y: auto;
+        border: none;
+        padding: 0;
+        margin: 0;
+        z-index: 99;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     div.toc::-webkit-scrollbar {
-        /* Webkit 浏览器（Chrome, Safari）滚动条样式 */
-        display: none; /* 隐藏滚动条 */
+        display: none;
     }
 
     .toc-nav {
-        /* 目录导航容器样式 */
-        padding: 1.5rem; /* 内边距 */
+        padding: 1.5rem;
     }
 
     .toc-nav ul {
-        /* 目录导航无序列表样式 */
-        list-style: none; /* 移除列表项标记 */
-        padding: 0; /* 移除内边距 */
-        margin: 0; /* 移除外边距 */
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
 
     .toc-nav li {
-        /* 目录导航列表项样式 */
-        margin: 8px 0; /* 上下外边距 */
+        margin: 8px 0;
     }
 
     .toc-nav a {
-        /* 目录链接样式 */
-        display: block; /* 块级显示 */
-        text-decoration: none; /* 无下划线 */
-        color: transparent; /* 默认透明 */
-        padding: 0 12px; /* 内边距 */
-        transition: all 0.2s ease; /* 所有属性过渡效果 */
-        font-size: 0.9rem; /* 字体大小 */
-        line-height: 1.4; /* 行高 */
-        text-align: left; /* 文本左对齐 */
-        white-space: nowrap; /* 禁止换行 */
-        overflow: hidden; /* 隐藏溢出内容 */
-        text-overflow: ellipsis; /* 显示省略号 */
-        max-width: 100%; /* 限制最大宽度 */
+        display: block;
+        text-decoration: none;
+        color: transparent;
+        padding: 0 12px;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
     }
 
     .toc-nav:hover a {
-        color: var(--text-color-tertiary); /* hover时显示文字颜色 */
+        color: var(--text-color-tertiary);
     }
 
     .toc-nav a::before {
-        /* 目录链接前的小横线样式 */
-        content: ""; /* 生成内容 */
-        display: inline-block; /* 行内块级显示 */
-        width: 16px; /* 宽度 */
-        height: 4px; /* 高度 */
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 4px;
         background-color: var(--text-color-tertiary);
-        border-radius: 16px; /* 圆角 */
-        margin-right: 12px; /* 右外边距 */
-        vertical-align: middle; /* 垂直居中对齐 */
+        border-radius: 16px;
+        margin-right: 12px;
+        vertical-align: middle;
     }
 
     .toc-nav ul ul a::before {
-        /* 二级目录链接前的小横线样式 */
-        width: 12px; /* 显示宽度 */
-        margin-right: 16px; /* 调整右外边距，使其与默认 a::before 占据的总宽度一致 (12px + 12px = 24px) */
+        width: 12px;
+        margin-right: 16px;
     }
 
     .toc-nav ul ul ul a::before {
-        /* 三级目录链接前的小横线样式 */
-        width: 8px; /* 显示宽度 */
-        margin-right: 20px; /* 调整右外边距，使其与默认 a::before 占据的总宽度一致 (8px + 16px = 24px) */
+        width: 8px;
+        margin-right: 20px;
     }
 
     .toc-nav a.active,
@@ -329,6 +333,7 @@
     .toc-nav a:hover::before {
         background-color: var(--text-color-primary);
     }
+
 
     /* upvote button style */
     button.upvote-btn {
@@ -381,7 +386,7 @@
         transition: transform 0.3s ease;
     }
 
-    /* 放大overlay - 新建一个元素专门用于overlay */
+    /* 图片放大功能 */
     .image-zoom-overlay {
         display: none;
         position: fixed;
@@ -397,30 +402,32 @@
         margin: 0;
     }
 
-    .image-zoom-toggle:checked ~ .image-zoom-overlay {
-        display: flex;
+    .image-zoom-toggle:checked~.image-zoom-overlay {
+        display: block;
         cursor: zoom-out;
     }
 
-    /* 确保原始label保持正常cursor */
-    .image-zoom-toggle:checked ~ .image-zoom-label {
-        cursor: default;
+    .image-zoom-toggle:checked~.image-zoom-label {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+        cursor: zoom-out;
     }
 
-    .image-zoom-toggle:checked ~ .image-zoom-overlay .zoomable-image {
+    .image-zoom-toggle:checked~.image-zoom-label .zoomable-image {
         max-width: 90vw;
         max-height: 90vh;
         width: auto;
         height: auto;
-        transform: scale(1);
         border: none;
         border-radius: 8px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        margin-left: auto !important;
-        margin-right: auto !important;
     }
 
-    .image-zoom-toggle:checked ~ .image-zoom-overlay::before {
+
+    .image-zoom-toggle:checked~.image-zoom-overlay::before {
         content: "";
         position: absolute;
         top: 20px;
@@ -433,7 +440,7 @@
         z-index: 1001;
     }
 
-    .image-zoom-toggle:checked ~ .image-zoom-overlay::after {
+    .image-zoom-toggle:checked~.image-zoom-overlay::after {
         content: "✕";
         position: absolute;
         top: 20px;
@@ -450,7 +457,7 @@
         z-index: 1002;
     }
 
-    .image-zoom-toggle:checked ~ .image-zoom-overlay figcaption {
+    .image-zoom-toggle:checked~figcaption {
         position: fixed;
         bottom: 20px;
         left: 50%;
@@ -481,12 +488,12 @@
             cursor: pointer;
         }
 
-        .image-zoom-toggle:checked ~ .image-zoom-overlay {
+        .image-zoom-toggle:checked~.image-zoom-overlay {
             padding: 10px;
         }
 
-        .image-zoom-toggle:checked ~ .image-zoom-overlay::before,
-        .image-zoom-toggle:checked ~ .image-zoom-overlay::after {
+        .image-zoom-toggle:checked~.image-zoom-overlay::before,
+        .image-zoom-toggle:checked~.image-zoom-overlay::after {
             top: 10px;
             right: 10px;
             width: 28px;
@@ -494,7 +501,7 @@
             font-size: 16px;
         }
 
-        .image-zoom-toggle:checked ~ .image-zoom-overlay figcaption {
+        .image-zoom-toggle:checked~figcaption {
             bottom: 10px;
             font-size: 12px;
             padding: 6px 12px;
