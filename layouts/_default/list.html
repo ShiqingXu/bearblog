@@ -7,7 +7,7 @@
   </small>
   {{ end }}
   {{ if .Site.Params.postSearch }}
-  <input id="search-input" type="text" placeholder="Search..." style="margin-top: 16px" />
+  <input id="search-input" type="text" placeholder="Search..." style="margin-top: 16px" aria-label="搜索文章" role="searchbox" />
   <script>
     // 等待 DOM 完全加载后执行
     document.addEventListener('DOMContentLoaded', function () {

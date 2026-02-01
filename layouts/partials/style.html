@@ -107,6 +107,17 @@
 
     nav a {
         margin-right: 8px;
+        font-family: var(--font-title);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+        color: var(--color-bebop-red);
+        text-shadow: 1px 1px 0 var(--color-bebop-orange);
+        text-decoration: none;
     }
 
     textarea {
@@ -505,6 +516,15 @@
             bottom: 10px;
             font-size: 12px;
             padding: 6px 12px;
+        }
+    }
+
+    /* 尊重用户的动画偏好设置 */
+    @media (prefers-reduced-motion: reduce) {
+        .title h1,
+        .toc-nav a,
+        .zoomable-image {
+            transition: none;
         }
     }
 </style>

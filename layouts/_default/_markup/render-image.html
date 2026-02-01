@@ -2,10 +2,34 @@
     {{ if $.Page.Site.Params.imageZoom }}
     <input type="checkbox" id="img-{{ substr (md5 .Destination) 0 8 }}" class="image-zoom-toggle" aria-label="放大图片" />
     <label for="img-{{ substr (md5 .Destination) 0 8 }}" class="image-zoom-label">
-        <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy" class="zoomable-image" />
+        {{ $image := $.Page.Resources.GetMatch .Destination }}
+        {{ if $image }}
+            {{ $small := $image.Resize "480x" }}
+            {{ $medium := $image.Resize "800x" }}
+            {{ $large := $image.Resize "1200x" }}
+            <picture>
+                <source media="(max-width: 480px)" srcset="{{ $small.RelPermalink }}" />
+                <source media="(max-width: 800px)" srcset="{{ $medium.RelPermalink }}" />
+                <img src="{{ $large.RelPermalink }}" alt="{{ .Text }}" loading="lazy" class="zoomable-image" decoding="async" />
+            </picture>
+        {{ else }}
+            <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy" class="zoomable-image" decoding="async" />
+        {{ end }}
     </label>
     <label for="img-{{ substr (md5 .Destination) 0 8 }}" class="image-zoom-overlay" aria-hidden="true"></label>
     {{ else }}
-    <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy" />
+        {{ $image := $.Page.Resources.GetMatch .Destination }}
+        {{ if $image }}
+            {{ $small := $image.Resize "480x" }}
+            {{ $medium := $image.Resize "800x" }}
+            {{ $large := $image.Resize "1200x" }}
+            <picture>
+                <source media="(max-width: 480px)" srcset="{{ $small.RelPermalink }}" />
+                <source media="(max-width: 800px)" srcset="{{ $medium.RelPermalink }}" />
+                <img src="{{ $large.RelPermalink }}" alt="{{ .Text }}" loading="lazy" decoding="async" />
+            </picture>
+        {{ else }}
+            <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy" decoding="async" />
+        {{ end }}
     {{ end }}
 </figure>

@@ -39,9 +39,19 @@
 
         const OFFSET = 100; // 与原逻辑一致的偏移阈值
 
-        // 仅对差异进行 class 更新，避免每次全量清空
+        // 缓存 headings 的位置数据，避免每次滚动都调用 getBoundingClientRect()
+        let headingsData = [];
+        let ticking = false;
         let currentActive = null;
         let currentChain = [];
+
+        // 缓存计算结果
+        function cacheHeadingsData() {
+            headingsData = headings.map(h => ({
+                id: h.id,
+                top: h.getBoundingClientRect().top + window.scrollY - OFFSET
+            }));
+        }
 
         function buildChainFromLink(link) {
             const chain = [];
@@ -100,13 +110,13 @@
             applyActiveChain(link);
         });
 
-        // 滚动时更新当前激活链接（从后往前找第一个 top <= OFFSET）
+        // 滚动时更新当前激活链接（使用缓存的数据）
         function updateActiveLink() {
+            const scrollY = window.scrollY;
             let linkToActivate = null;
-            for (let i = headings.length - 1; i >= 0; i--) {
-                const top = headings[i].getBoundingClientRect().top;
-                if (top <= OFFSET) {
-                    linkToActivate = idToLink.get(headings[i].id) || null;
+            for (let i = headingsData.length - 1; i >= 0; i--) {
+                if (headingsData[i].top <= scrollY) {
+                    linkToActivate = idToLink.get(headingsData[i].id) || null;
                     break;
                 }
             }
@@ -114,8 +124,7 @@
         }
 
         // rAF 节流 + passive 监听
-        let ticking = false;
-        function onScrollOrResize() {
+        function onScroll() {
             if (!ticking) {
                 requestAnimationFrame(function () {
                     updateActiveLink();
@@ -125,10 +134,17 @@
             }
         }
 
-        window.addEventListener('scroll', onScrollOrResize, { passive: true });
-        window.addEventListener('resize', onScrollOrResize, { passive: true });
+        // resize 时重新缓存位置数据
+        function onResize() {
+            cacheHeadingsData();
+            updateActiveLink();
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onResize, { passive: true });
 
         // 初始化
+        cacheHeadingsData();
         updateActiveLink();
     });
 </script>
